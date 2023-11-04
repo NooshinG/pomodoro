@@ -12,8 +12,8 @@ const Settings = () => {
         return
     }
 
-    let pomodoro:number = pomoRef.current.value ? pomoRef.current.value as number : 25 ;
-    dispatch({ type: "CHANGE_POMODORO", payload: pomodoro });
+    let pomodoro:number = pomoRef.current.value ? parseInt(pomoRef.current.value) : 25 ;    
+    dispatch({ type: "CHANGE_POMODORO", payload: {pomodoro} });
   };
 
   return (

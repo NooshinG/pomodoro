@@ -8,7 +8,7 @@ interface StateType {
 
 type pomoActionType = {
   type: "CHANGE_POMODORO";
-  payload: number;
+  payload: StateType;
 };
 
 type ActionType = pomoActionType;
@@ -27,7 +27,7 @@ const reducer = (state: StateType, action: ActionType) => {
     case "CHANGE_POMODORO":
       return {
         ...state,
-        pomodoro: action.payload,
+        pomodoro: action.payload.pomodoro,
       };
 
     default:
