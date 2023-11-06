@@ -1,33 +1,38 @@
 "use client";
 
-import { useContext, useEffect, useState, useReducer } from "react";
+import { useContext, useEffect, useState } from "react";
 import PomodoroContext from "../context/pomo-context";
 import Settings from "./Settings";
 
 const Pomodoro = () => {
-  const { state: ctxState } = useContext(PomodoroContext);
-  const [pomoTime, setPomoTime] = useState<number>(ctxState.pomodoro);
+  const { pomodoro } = useContext(PomodoroContext);
+  const [initPomodoro, setInitPomodoro] = useState<number>(pomodoro);
+  const [pomodoroCounter, setPomodoroCounter] = useState<number>(pomodoro);
   const [showSettings, setShowSettings] = useState<boolean>(false);
-
   let PomoCounter: NodeJS.Timeout;
+  
+  if (initPomodoro !== pomodoro) {
+    setInitPomodoro(pomodoro);
+    setPomodoroCounter(pomodoro);
+  }
 
   const startTimer = (): NodeJS.Timeout => {
     PomoCounter = setTimeout(() => {
-      setPomoTime((prev) => prev - 1);
+      setPomodoroCounter((prev) => prev - 1);
     }, 1000);
 
     return PomoCounter;
   };
 
   useEffect(() => {
-    pomoTime > 0 && startTimer();
-  }, [pomoTime]);
+    pomodoroCounter > 0 && startTimer();
+  }, [pomodoroCounter]);
 
   const showSettingsHandler = (): void => {
     setShowSettings((prev) => !prev);
     clearInterval(PomoCounter);
 
-    if (showSettings && pomoTime > 0) {
+    if (showSettings && pomodoroCounter > 0) {
       startTimer();
     }
 
@@ -36,7 +41,9 @@ const Pomodoro = () => {
 
   return (
     <>
-      <div>{pomoTime}</div>
+      <div>{pomodoroCounter}</div>
+      <p>{`context value : ${pomodoro}`}</p>
+      <p>{`init value: ${initPomodoro}`}</p>
       {showSettings && <Settings />}
       <button onClick={showSettingsHandler}>Settings</button>
     </>
