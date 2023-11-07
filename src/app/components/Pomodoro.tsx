@@ -1,49 +1,73 @@
 "use client";
 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import PomodoroContext from "../context/pomo-context";
+import usePomodoro from "./usePomodoro";
 import Settings from "./Settings";
 
+enum TimerMode {
+  "pomodor",
+  "short",
+  "long",
+}
+
 const Pomodoro = () => {
-  const { pomodoro } = useContext(PomodoroContext);
-  const [initPomodoro, setInitPomodoro] = useState<number>(pomodoro);
-  const [pomodoroCounter, setPomodoroCounter] = useState<number>(pomodoro);
-  const [showSettings, setShowSettings] = useState<boolean>(false);
-  let PomoCounter: NodeJS.Timeout;
-  
-  if (initPomodoro !== pomodoro) {
-    setInitPomodoro(pomodoro);
-    setPomodoroCounter(pomodoro);
-  }
+  const [timers, setTimers] = useState({
+    pomoTimer: true,
+    shortTimer: false,
+    longTimer: false,
+  });
 
-  const startTimer = (): NodeJS.Timeout => {
-    PomoCounter = setTimeout(() => {
-      setPomodoroCounter((prev) => prev - 1);
-    }, 1000);
+  const { pomodoro, shortBreak, longBreak } = useContext(PomodoroContext);
+  let modeTime: number = timers.pomoTimer
+    ? pomodoro
+    : timers.shortTimer
+    ? shortBreak
+    : longBreak;
 
-    return PomoCounter;
-  };
+  const { pomodoroCounter, showSettings, showSettingsHandler, clearTimer } =
+    usePomodoro(modeTime);
 
-  useEffect(() => {
-    pomodoroCounter > 0 && startTimer();
-  }, [pomodoroCounter]);
-
-  const showSettingsHandler = (): void => {
-    setShowSettings((prev) => !prev);
-    clearInterval(PomoCounter);
-
-    if (showSettings && pomodoroCounter > 0) {
-      startTimer();
+  const changeModeHandler = (item: TimerMode) => {
+    clearTimer();
+    
+    switch (item) {
+      case TimerMode.pomodor: {
+        setTimers({ pomoTimer: true, shortTimer: false, longTimer: false });
+        break;
+      }
+      case TimerMode.short: {
+        setTimers({ pomoTimer: false, shortTimer: true, longTimer: false });
+        break;
+      }
+      case TimerMode.long: {
+        setTimers({ pomoTimer: false, shortTimer: false, longTimer: true });
+        break;
+      }
     }
-
-    return;
   };
 
   return (
     <>
+      <ul>
+        <li key={1}>
+          <button onClick={changeModeHandler.bind(null, TimerMode.pomodor)}>
+            pomodoro
+          </button>
+        </li>
+        <li key={2}>
+          <button onClick={changeModeHandler.bind(null, TimerMode.short)}>
+            short break
+          </button>
+        </li>
+        <li key={3}>
+          <button onClick={changeModeHandler.bind(null, TimerMode.long)}>
+            long break
+          </button>
+        </li>
+      </ul>
       <div>{pomodoroCounter}</div>
       <p>{`context value : ${pomodoro}`}</p>
-      <p>{`init value: ${initPomodoro}`}</p>
       {showSettings && <Settings />}
       <button onClick={showSettingsHandler}>Settings</button>
     </>
