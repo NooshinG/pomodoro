@@ -21,13 +21,14 @@ const Settings = () => {
   return (
     <div>
       <form onSubmit={saveSettingshandler}>
+        <label htmlFor="pomodoro">pomodoro</label>
         <input
           type="number"
           min={1}
           max={25}
           defaultValue={pomodoro}
           step={1}
-          id="pomodor"
+          id="pomodoro"
           ref={pomoRef}
         />
         <button>Save</button>

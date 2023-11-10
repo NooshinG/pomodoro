@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import PomodoroContext from "../context/pomo-context";
 import usePomodoro from "./usePomodoro";
 import Settings from "./Settings";
@@ -25,12 +25,19 @@ const Pomodoro = () => {
     ? shortBreak
     : longBreak;
 
-  const { pomodoroCounter, showSettings, showSettingsHandler, clearTimer } =
-    usePomodoro(modeTime);
+  const {
+    remainingTime,
+    showSettings,
+    isStart,
+    showSettingsHandler,
+    clearTimer,
+    timerControler,
+    resetTimer,
+  } = usePomodoro(modeTime * 60);
 
   const changeModeHandler = (item: TimerMode) => {
     clearTimer();
-    
+
     switch (item) {
       case TimerMode.pomodor: {
         setTimers({ pomoTimer: true, shortTimer: false, longTimer: false });
@@ -66,8 +73,10 @@ const Pomodoro = () => {
           </button>
         </li>
       </ul>
-      <div>{pomodoroCounter}</div>
+      <div>{remainingTime ? remainingTime : `${modeTime} : 00`}</div>
       <p>{`context value : ${pomodoro}`}</p>
+      <button onClick={timerControler}>{isStart ? "Pause" : "Start"}</button>
+      <button onClick={resetTimer}>Reset</button>
       {showSettings && <Settings />}
       <button onClick={showSettingsHandler}>Settings</button>
     </>
