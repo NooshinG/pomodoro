@@ -1,12 +1,14 @@
 "use client";
 
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Roboto} from "next/font/google";
 import "./globals.css";
 
 import { PomodoroProvider } from "./context/pomo-context";
 
-const inter = Inter({ subsets: ["latin"] });
+// const inter = Inter({ subsets: ["latin"] });
+const roboto = Roboto({ weight:['400','500','700'] ,subsets:["latin"]});
+// const abel = Abel({weight:'400',subsets:['latin']})
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,7 +22,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${roboto.className} relative bg-primary h-screen flex flex-col justify-around items-center text-center text-light`}>
         <PomodoroProvider>{children}</PomodoroProvider>
       </body>
     </html>

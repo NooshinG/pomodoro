@@ -2,4 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
+li[data-active="true"] {
+  @apply h-full bg-highlight text-dark;
+}
 
+.option {
+  @apply py-3 px-5 rounded-[50px];
+}
+
+.time__container {
+  @apply w-fit flex flex-col items-start;
+}
+
+.time__label {
+  @apply text-light-gray text-sm font-[500];
+}
+
+.time__input {
+  @apply w-24 py-1 px-3 rounded-md font-[500] bg-light;
+}
+
+.time__input::-webkit-inner-spin-button,
+.time__input::-webkit-outer-spin-button {
+  opacity: 1;
+}
+
+/* .time__input::-webkit-inner-spin-button,
+.time__input::-webkit-outer-spin-button {
+  background: url('/arrow-down.svg');
+} */
