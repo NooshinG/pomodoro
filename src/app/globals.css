@@ -11,7 +11,7 @@ li[data-active="true"] {
 }
 
 .time__container {
-  @apply w-fit flex flex-col items-start;
+  @apply w-fit flex flex-col gap-2 items-start;
 }
 
 .time__label {
@@ -19,12 +19,20 @@ li[data-active="true"] {
 }
 
 .time__input {
-  @apply w-24 py-1 px-3 rounded-md font-[500] bg-light;
+  @apply flex justify-between py-1 px-3 rounded-md font-[500] bg-light;
 }
 
-.time__input::-webkit-inner-spin-button,
+.arrow {
+  @apply h-[18px] aspect-square
+}
+
+/* .time__input::-webkit-inner-spin-button,
 .time__input::-webkit-outer-spin-button {
   opacity: 1;
+} */
+
+.error {
+    @apply bg-highlight
 }
 
 /* .time__input::-webkit-inner-spin-button,

@@ -79,7 +79,7 @@ const Pomodoro = () => {
         <button onClick={timerControler}>{isStart ? "Pause" : "Start"}</button>
       </div>
       {/* <button onClick={resetTimer}>Reset</button> */}
-      {showSettings && <Settings />}
+      {showSettings && <Settings showSettingsHandler={showSettingsHandler} />}
       <button onClick={showSettingsHandler}><img className={'w-8'} src="gear.svg"/></button>
     </>
   );
