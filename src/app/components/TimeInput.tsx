@@ -22,7 +22,9 @@ const TimeInput = ({
   const [inputValue, setInputValue] = useState<number>(initialValue);
   const regex = new RegExp(validationPattern);
   let isValid: boolean = regex.test(inputValue.toString());
-  
+
+  // console.log(isValid, inputValue);
+
   const changeValueHandler = (e: React.FormEvent<HTMLInputElement>) => {
     setInputValue(+e.currentTarget.value);
     validateInput(isValid);
@@ -35,6 +37,8 @@ const TimeInput = ({
   const btnNumberHandler = (val: number) => {
     setInputValue((prev) => prev + val);
     validateInput(isValid);
+
+    
 
     if (isValid) {
       setNewValue(inputValue);
@@ -60,7 +64,11 @@ const TimeInput = ({
           </button>
         </div>
       </div>
-      <span className={`text-[0.7rem] ${isValid ? "text-transparent" : "text-primary"}`}>
+      <span
+        className={`text-[0.7rem] ${
+          isValid ? "text-transparent" : "text-primary"
+        }`}
+      >
         1-{maxValue} minutes
       </span>
     </div>

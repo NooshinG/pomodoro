@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useState } from "react";
 import PomodoroContext from "../context/pomo-context";
 import TimeInput from "./TimeInput";
 
@@ -22,50 +22,75 @@ const Settings = ({ showSettingsHandler }: PropsType) => {
     isValidLongBreak: true,
   });
 
-  const [newTimeValues, setNewTimeValues] = useState({
-    newPomodoro: 25,
-    newShortBreak: 5,
-    newLongBreak: 15,
-  });
+  // const [newTimeValues, setNewTimeValues] = useState({
+  //   newPomodoro: 25,
+  //   newShortBreak: 5,
+  //   newLongBreak: 15,
+  // });
+
+  let newPomodoro: number = pomodoro;
+  let newShortBreak: number = shortBreak;
+  let newLongBreak: number = longBreak;
+
+  // let isPomodoroValid: boolean = true;
+  // let isShortBreakValid: boolean = true;
+  // let isLongBreakValid: boolean = true;
 
   const saveSettingshandler = (e: React.SyntheticEvent) => {
     e.preventDefault();
 
+    console.log(
+      isValidInput.isValidPomodoro &&
+        isValidInput.isValidShortBreak &&
+        isValidInput.isValidLongBreak,
+      newShortBreak
+    );
+
     if (
-      !isValidInput.isValidPomodoro ||
-      !isValidInput.isValidShortBreak ||
-      !isValidInput.isValidLongBreak
+      isValidInput.isValidPomodoro &&
+      isValidInput.isValidShortBreak &&
+      isValidInput.isValidLongBreak
+      // !isPomodoroValid ||
+      // !isShortBreakValid ||
+      // !isLongBreakValid
     ) {
-      return;
+      changePomodoro(newPomodoro);
+      changeShortBreak(newShortBreak);
+      changeLongBreak(newLongBreak);
+      showSettingsHandler();
     }
 
-    changePomodoro(newTimeValues.newPomodoro);
-    changeShortBreak(newTimeValues.newShortBreak);
-    changeLongBreak(newTimeValues.newLongBreak);
-    showSettingsHandler();
+    // changePomodoro(newTimeValues.newPomodoro);
+    // changeShortBreak(newTimeValues.newShortBreak);
+    // changeLongBreak(newTimeValues.newLongBreak);
+    return;
   };
 
   const isValidPomodoro = (isValid: boolean) => {
     setIsValidInput({ ...isValidInput, isValidPomodoro: isValid });
+    // isPomodoroValid = isValid;
   };
   const isValidShortBreak = (isValid: boolean) => {
     setIsValidInput({ ...isValidInput, isValidShortBreak: isValid });
+    // isShortBreakValid = isValid;
   };
   const isValidLongBreak = (isValid: boolean) => {
     setIsValidInput({ ...isValidInput, isValidLongBreak: isValid });
+    // isLongBreakValid = isValid;
   };
 
   const setNewPomodoro = (val: number) => {
-    setNewTimeValues({ ...newTimeValues, newPomodoro: val });
+    // setNewTimeValues({ ...newTimeValues, newPomodoro: val });
+    newPomodoro = val;
   };
   const setNewShortBreak = (val: number) => {
-    setNewTimeValues({ ...newTimeValues, newShortBreak: val });
+    // setNewTimeValues({ ...newTimeValues, newShortBreak: val });
+    newShortBreak = val;
   };
   const setNewLongBreak = (val: number) => {
-    setNewTimeValues({ ...newTimeValues, newLongBreak: val });
+    // setNewTimeValues({ ...newTimeValues, newLongBreak: val });
+    newLongBreak = val;
   };
-
-  console.log(isValidInput.isValidLongBreak);
 
   return (
     <div
@@ -124,9 +149,12 @@ const Settings = ({ showSettingsHandler }: PropsType) => {
           }
           disabled={
             !(
-              isValidInput.isValidPomodoro &&
-              isValidInput.isValidShortBreak &&
-              isValidInput.isValidLongBreak
+              (
+                isValidInput.isValidPomodoro &&
+                isValidInput.isValidShortBreak &&
+                isValidInput.isValidLongBreak
+              )
+              // (isPomodoroValid && isShortBreakValid && isLongBreakValid)
             )
           }
         >

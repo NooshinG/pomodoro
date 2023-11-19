@@ -32,13 +32,12 @@ const usePomodoro = (pomodoro: number) => {
   }, [pomodoroCounter, isStart]);
 
   const showSettingsHandler = (): void => {
-    setShowSettings((prev) => !prev);
-    setIsStart(false);
-    clearInterval(PomoCounter);
+    if (!showSettings) {
+      clearInterval(PomoCounter);
+      setIsStart(false);
+    }
 
-    // if (showSettings && pomodoroCounter > 0) {
-    //   startTimer();
-    // }
+    setShowSettings((prev) => !prev);
     return;
   };
 
