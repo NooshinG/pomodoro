@@ -1,14 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, memo, useEffect, useCallback } from "react";
 
 type InputProps = {
   inputTitle: string;
   initialValue: number;
   maxValue: number;
   validationPattern: string;
-  validateInput: (isValid: boolean) => void;
-  setNewValue: (val: number) => void;
+  setNewValue: (val: number, isValid: boolean) => void;
 };
 
 const TimeInput = ({
@@ -16,35 +15,27 @@ const TimeInput = ({
   initialValue,
   maxValue,
   validationPattern,
-  validateInput,
   setNewValue,
 }: InputProps) => {
   const [inputValue, setInputValue] = useState<number>(initialValue);
+
   const regex = new RegExp(validationPattern);
   let isValid: boolean = regex.test(inputValue.toString());
 
-  // console.log(isValid, inputValue);
-
   const changeValueHandler = (e: React.FormEvent<HTMLInputElement>) => {
     setInputValue(+e.currentTarget.value);
-    validateInput(isValid);
-
-    if (isValid) {
-      setNewValue(inputValue);
-    }
   };
 
-  const btnNumberHandler = (val: number) => {
-    setInputValue((prev) => prev + val);
-    validateInput(isValid);
+  const btnNumberHandler = useCallback(
+    (val: number) => {
+      setInputValue((prev) => prev + val);
+    },
+    [inputValue]
+  );
 
-    
+  useEffect(() => setNewValue(inputValue, isValid), [inputValue, isValid]);
 
-    if (isValid) {
-      setNewValue(inputValue);
-    }
-  };
-
+  console.log(inputValue, isValid);
   return (
     <div className={"time__container"}>
       <h3 className="time__label">{inputTitle}</h3>
@@ -54,6 +45,7 @@ const TimeInput = ({
           className="w-20 bg-transparent outline-none"
           value={inputValue}
           onChange={changeValueHandler}
+          pattern={validationPattern}
         />
         <div className={"flex flex-col"}>
           <button onClick={btnNumberHandler.bind(null, 1)}>
@@ -66,7 +58,7 @@ const TimeInput = ({
       </div>
       <span
         className={`text-[0.7rem] ${
-          isValid ? "text-transparent" : "text-primary"
+          !isValid ? "text-highlight" : "text-transparent"
         }`}
       >
         1-{maxValue} minutes
@@ -75,4 +67,4 @@ const TimeInput = ({
   );
 };
 
-export default TimeInput;
+export default memo(TimeInput);

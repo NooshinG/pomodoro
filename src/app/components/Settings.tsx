@@ -1,9 +1,15 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useCallback } from "react";
 import PomodoroContext from "../context/pomo-context";
 import TimeInput from "./TimeInput";
 
 type PropsType = {
   showSettingsHandler: () => void;
+};
+
+type Minutes = {
+  pomodoro: { val: number; isValid: boolean };
+  shortBreak: { val: number; isValid: boolean };
+  longBreak: { val: number; isValid: boolean };
 };
 
 const Settings = ({ showSettingsHandler }: PropsType) => {
@@ -16,81 +22,48 @@ const Settings = ({ showSettingsHandler }: PropsType) => {
     changeLongBreak,
   } = useContext(PomodoroContext);
 
-  const [isValidInput, setIsValidInput] = useState({
-    isValidPomodoro: true,
-    isValidShortBreak: true,
-    isValidLongBreak: true,
+  const [minutes, setMinutes] = useState<Minutes>({
+    pomodoro: { val: pomodoro, isValid: true },
+    shortBreak: { val: shortBreak, isValid: true },
+    longBreak: { val: longBreak, isValid: true },
   });
-
-  // const [newTimeValues, setNewTimeValues] = useState({
-  //   newPomodoro: 25,
-  //   newShortBreak: 5,
-  //   newLongBreak: 15,
-  // });
-
-  let newPomodoro: number = pomodoro;
-  let newShortBreak: number = shortBreak;
-  let newLongBreak: number = longBreak;
-
-  // let isPomodoroValid: boolean = true;
-  // let isShortBreakValid: boolean = true;
-  // let isLongBreakValid: boolean = true;
-
+  console.log(minutes);
   const saveSettingshandler = (e: React.SyntheticEvent) => {
     e.preventDefault();
-
-    console.log(
-      isValidInput.isValidPomodoro &&
-        isValidInput.isValidShortBreak &&
-        isValidInput.isValidLongBreak,
-      newShortBreak
-    );
-
     if (
-      isValidInput.isValidPomodoro &&
-      isValidInput.isValidShortBreak &&
-      isValidInput.isValidLongBreak
-      // !isPomodoroValid ||
-      // !isShortBreakValid ||
-      // !isLongBreakValid
+      minutes.pomodoro.isValid &&
+      minutes.shortBreak.isValid &&
+      minutes.longBreak.isValid
     ) {
-      changePomodoro(newPomodoro);
-      changeShortBreak(newShortBreak);
-      changeLongBreak(newLongBreak);
+      changePomodoro(minutes.pomodoro.val);
+      changeShortBreak(minutes.shortBreak.val);
+      changeLongBreak(minutes.longBreak.val);
       showSettingsHandler();
     }
 
-    // changePomodoro(newTimeValues.newPomodoro);
-    // changeShortBreak(newTimeValues.newShortBreak);
-    // changeLongBreak(newTimeValues.newLongBreak);
     return;
   };
 
-  const isValidPomodoro = (isValid: boolean) => {
-    setIsValidInput({ ...isValidInput, isValidPomodoro: isValid });
-    // isPomodoroValid = isValid;
-  };
-  const isValidShortBreak = (isValid: boolean) => {
-    setIsValidInput({ ...isValidInput, isValidShortBreak: isValid });
-    // isShortBreakValid = isValid;
-  };
-  const isValidLongBreak = (isValid: boolean) => {
-    setIsValidInput({ ...isValidInput, isValidLongBreak: isValid });
-    // isLongBreakValid = isValid;
-  };
+  const setNewPomodoro = useCallback(
+    (val: number, isValid: boolean) => {
+      setMinutes({ ...minutes, pomodoro: { val: val, isValid: isValid } });
+    },
+    [minutes.pomodoro.val, minutes.pomodoro.isValid]
+  );
 
-  const setNewPomodoro = (val: number) => {
-    // setNewTimeValues({ ...newTimeValues, newPomodoro: val });
-    newPomodoro = val;
-  };
-  const setNewShortBreak = (val: number) => {
-    // setNewTimeValues({ ...newTimeValues, newShortBreak: val });
-    newShortBreak = val;
-  };
-  const setNewLongBreak = (val: number) => {
-    // setNewTimeValues({ ...newTimeValues, newLongBreak: val });
-    newLongBreak = val;
-  };
+  const setNewShortBreak = useCallback(
+    (val: number, isValid: boolean) => {
+      setMinutes({ ...minutes, shortBreak: { val: val, isValid: isValid } });
+    },
+    [minutes.shortBreak.val, minutes.shortBreak.isValid]
+  );
+
+  const setNewLongBreak = useCallback(
+    (val: number, isValid: boolean) => {
+      setMinutes({ ...minutes, longBreak: { val: val, isValid: isValid } });
+    },
+    [minutes.longBreak.val, minutes.longBreak.isValid]
+  );
 
   return (
     <div
@@ -109,7 +82,6 @@ const Settings = ({ showSettingsHandler }: PropsType) => {
         </button>
       </div>
       <form
-        onSubmit={saveSettingshandler}
         className={
           "relative w-[80vw] md:w-[55vw] pt-4 pb-8 pr-6 pl-10 rounded-b-2xl bg-white"
         }
@@ -120,41 +92,38 @@ const Settings = ({ showSettingsHandler }: PropsType) => {
         <div className={"flex justify-between"}>
           <TimeInput
             inputTitle="pomodoro"
-            initialValue={pomodoro}
+            initialValue={minutes.pomodoro.val}
             maxValue={25}
             validationPattern="^(2[0-5]|1[0-9]|[1-9])$"
-            validateInput={isValidPomodoro}
             setNewValue={setNewPomodoro}
           />
           <TimeInput
             inputTitle="short break"
-            initialValue={shortBreak}
+            initialValue={minutes.shortBreak.val}
             maxValue={5}
             validationPattern="^([1-5])$"
-            validateInput={isValidShortBreak}
             setNewValue={setNewShortBreak}
           />
           <TimeInput
             inputTitle="long break"
-            initialValue={longBreak}
+            initialValue={minutes.longBreak.val}
             maxValue={15}
             validationPattern="^([1-9]|1[0-5])$"
-            validateInput={isValidLongBreak}
             setNewValue={setNewLongBreak}
           />
         </div>
         <button
+          onClick={saveSettingshandler}
           className={
             "w-fit absolute bottom-[-20px] left-0 right-0 m-auto bg-highlight text-light font-[500] py-2 px-10 rounded-[50px] disabled:bg-dark-gray"
           }
           disabled={
             !(
               (
-                isValidInput.isValidPomodoro &&
-                isValidInput.isValidShortBreak &&
-                isValidInput.isValidLongBreak
-              )
-              // (isPomodoroValid && isShortBreakValid && isLongBreakValid)
+                minutes.pomodoro.isValid &&
+                minutes.shortBreak.isValid &&
+                minutes.longBreak.isValid
+              )              
             )
           }
         >
