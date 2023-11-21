@@ -27,7 +27,14 @@ const Settings = ({ showSettingsHandler }: PropsType) => {
     shortBreak: { val: shortBreak, isValid: true },
     longBreak: { val: longBreak, isValid: true },
   });
-  console.log(minutes);
+
+  // console.log({ ...minutes });
+
+  // const isEnable: boolean =
+  //   minutes.pomodoro.isValid &&
+  //   minutes.shortBreak.isValid &&
+  //   minutes.longBreak.isValid;
+
   const saveSettingshandler = (e: React.SyntheticEvent) => {
     e.preventDefault();
     if (
@@ -46,21 +53,27 @@ const Settings = ({ showSettingsHandler }: PropsType) => {
 
   const setNewPomodoro = useCallback(
     (val: number, isValid: boolean) => {
-      setMinutes({ ...minutes, pomodoro: { val: val, isValid: isValid } });
+      setMinutes((prev) => {
+        return { ...prev, pomodoro: { val: val, isValid: isValid } };
+      });
     },
     [minutes.pomodoro.val, minutes.pomodoro.isValid]
   );
 
   const setNewShortBreak = useCallback(
     (val: number, isValid: boolean) => {
-      setMinutes({ ...minutes, shortBreak: { val: val, isValid: isValid } });
+      setMinutes((prev) => {
+        return { ...prev, shortBreak: { val: val, isValid: isValid } };
+      });
     },
     [minutes.shortBreak.val, minutes.shortBreak.isValid]
   );
 
   const setNewLongBreak = useCallback(
     (val: number, isValid: boolean) => {
-      setMinutes({ ...minutes, longBreak: { val: val, isValid: isValid } });
+      setMinutes((prev) => {
+        return { ...prev, longBreak: { val: val, isValid: isValid } };
+      });
     },
     [minutes.longBreak.val, minutes.longBreak.isValid]
   );
@@ -119,11 +132,9 @@ const Settings = ({ showSettingsHandler }: PropsType) => {
           }
           disabled={
             !(
-              (
-                minutes.pomodoro.isValid &&
-                minutes.shortBreak.isValid &&
-                minutes.longBreak.isValid
-              )              
+              minutes.pomodoro.isValid &&
+              minutes.shortBreak.isValid &&
+              minutes.longBreak.isValid
             )
           }
         >

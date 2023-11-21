@@ -35,7 +35,7 @@ const TimeInput = ({
 
   useEffect(() => setNewValue(inputValue, isValid), [inputValue, isValid]);
 
-  console.log(inputValue, isValid);
+  // console.log(inputValue, isValid);
   return (
     <div className={"time__container"}>
       <h3 className="time__label">{inputTitle}</h3>
@@ -48,10 +48,10 @@ const TimeInput = ({
           pattern={validationPattern}
         />
         <div className={"flex flex-col"}>
-          <button onClick={btnNumberHandler.bind(null, 1)}>
+          <button type="button" onClick={btnNumberHandler.bind(null, 1)}>
             <img className={"arrow"} src="arrow-up.svg" />
           </button>
-          <button onClick={btnNumberHandler.bind(null, -1)}>
+          <button type="button" onClick={btnNumberHandler.bind(null, -1)}>
             <img className={"arrow"} src="arrow-down.svg" />
           </button>
         </div>
