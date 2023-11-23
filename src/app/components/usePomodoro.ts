@@ -59,6 +59,7 @@ const usePomodoro = (pomodoro: number) => {
     remainingTime,
     showSettings,
     isStart,
+    pomodoroCounter,
     showSettingsHandler,
     clearTimer,
     timerControler,

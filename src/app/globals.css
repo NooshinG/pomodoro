@@ -35,6 +35,9 @@ li[data-active="true"] {
     @apply bg-highlight
 }
 
+.shadow{
+  @apply shadow-[20px_20px_25px_0px_#151932,-25px_-25px_47px_10px_#272b58]
+}
 /* .time__input::-webkit-inner-spin-button,
 .time__input::-webkit-outer-spin-button {
   background: url('/arrow-down.svg');

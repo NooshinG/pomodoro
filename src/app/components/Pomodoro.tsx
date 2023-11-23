@@ -4,6 +4,7 @@ import { useContext, useState } from "react";
 import PomodoroContext from "../context/pomo-context";
 import usePomodoro from "./usePomodoro";
 import Settings from "./Settings";
+import Timer from "./Timer";
 
 enum TimerMode {
   "pomodor",
@@ -29,6 +30,7 @@ const Pomodoro = () => {
     remainingTime,
     showSettings,
     isStart,
+    pomodoroCounter,
     showSettingsHandler,
     clearTimer,
     timerControler,
@@ -54,10 +56,21 @@ const Pomodoro = () => {
     }
   };
 
+  let percent: number =
+    ((pomodoroCounter ? pomodoroCounter : modeTime * 60) * 100) /
+    (modeTime * 60);
+
+  let procces: string = ((percent * 722.2) / 100).toString();
+  
+
   return (
     <>
-    <h1 className={"text-3xl font-[700]"}>pomodoro</h1>
-      <ul className={'bg-dark py-2 px-2 text-light-gray font-[700] rounded-[50px] flex gap-2'}>
+      <h1 className={"text-3xl font-[700]"}>pomodoro</h1>
+      <ul
+        className={
+          "bg-dark py-2 px-2 text-light-gray font-[700] rounded-[50px] flex gap-2"
+        }
+      >
         <li key={1} data-active={timers.pomoTimer} className="option">
           <button onClick={changeModeHandler.bind(null, TimerMode.pomodor)}>
             pomodoro
@@ -74,13 +87,20 @@ const Pomodoro = () => {
           </button>
         </li>
       </ul>
-      <div>
-        <p>{remainingTime ? remainingTime : `${modeTime} : 00`}</p>
-        <button onClick={timerControler}>{isStart ? "Pause" : "Start"}</button>
+      <div className={"relative md:w-[400px] aspect-square "}>
+        <div className={"absolute w-full h-full shadow rounded-[50%]"}></div>
+        <Timer
+          isStart={isStart}
+          procces={procces}
+          remainingTime={remainingTime ? remainingTime : `${modeTime}:00`}
+          timerControler={timerControler}
+        />
       </div>
-      {/* <button onClick={resetTimer}>Reset</button> */}
+
       {showSettings && <Settings showSettingsHandler={showSettingsHandler} />}
-      <button onClick={showSettingsHandler}><img className={'w-8'} src="gear.svg"/></button>
+      <button onClick={showSettingsHandler}>
+        <img className={"w-8"} src="gear.svg" />
+      </button>
     </>
   );
 };
