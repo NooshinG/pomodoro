@@ -5,13 +5,13 @@
 <h2>Project Screenshots:</h2>
 
  <p>Main Page :</p>  
-<img src="https://github.com/NooshinG/pomodoro/blob/master/public/pomodoro-main-page.png" alt="pomodoro-main-page" width="500px" height="400px">
+<img src="https://github.com/NooshinG/pomodoro/blob/master/public/pomodoro-main-page.png" alt="pomodoro-main-page" width="500px">
 <br/>
  <p>Different Timing Modes :</p>  
-<img src="https://github.com/NooshinG/pomodoro/blob/master/public/pomodoro-select-mode.png" alt="pomodoro-select-mode" width="500px" height="400px">
+<img src="https://github.com/NooshinG/pomodoro/blob/master/public/pomodoro-select-mode.png" alt="pomodoro-select-mode" width="500px">
 <br/>
  <p>Settings Modal :</p>  
-<img src="https://github.com/NooshinG/pomodoro/blob/master/public/pomodoro-settings.png" alt="pomodoro-settings" width="500px" height="400px">
+<img src="https://github.com/NooshinG/pomodoro/blob/master/public/pomodoro-settings.png" alt="pomodoro-settings" width="500px">
 <br/>
 
 <h2>🧐 Features</h2>
